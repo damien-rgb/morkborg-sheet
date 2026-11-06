@@ -1,0 +1,14 @@
+{
+  "manifest_version": 1,
+  "name": "MÖRK BORG Simple Sheet",
+  "version": "1.0.0",
+  "description": "A plain MÖRK BORG character sheet. Everything visible, nothing automated, no dice. Roll in the dice tray.",
+  "icon": "/morkborg-sheet/icon.svg",
+  "action": {
+    "title": "Simple Sheet",
+    "icon": "/morkborg-sheet/icon.svg",
+    "popover": "/morkborg-sheet/index.html",
+    "width": 440,
+    "height": 700
+  }
+}

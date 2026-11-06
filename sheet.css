@@ -1,0 +1,295 @@
+/* MORK BORG sheet.
+   Legibility first. The art-punk palette is kept, the art-punk chaos is not:
+   one column, nothing hidden, every control labelled in words. */
+
+:root {
+  --yellow: #ffe900;
+  --black: #0d0d0d;
+  --ink: #111;
+  --paper: #fff;
+  --line: #000;
+  --muted: #555;
+  --pink: #d1006c;
+  --tap: 44px;          /* minimum comfortable target */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Arial, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+/* ---------- top bar ---------- */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--yellow);
+  border-bottom: 4px solid var(--line);
+  padding: 10px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bar-title {
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+}
+
+.bar-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.bar button {
+  min-height: var(--tap);
+  padding: 0 14px;
+  font: inherit;
+  font-weight: 700;
+  background: var(--black);
+  color: var(--yellow);
+  border: 3px solid var(--line);
+  cursor: pointer;
+}
+
+.bar button:hover { background: var(--pink); color: #fff; }
+
+/* ---------- layout ---------- */
+
+main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 14px 12px 40px;
+}
+
+.block {
+  border: 3px solid var(--line);
+  padding: 12px;
+  margin: 0 0 14px;
+}
+
+.row { display: flex; flex-wrap: wrap; gap: 14px; }
+.row .block { flex: 1 1 200px; margin-bottom: 14px; }
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--black);
+  color: var(--yellow);
+  padding: 5px 9px;
+  display: inline-block;
+}
+
+.lbl {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 8px 0 3px;
+}
+
+.help {
+  margin: 8px 0 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.note { margin: 8px 0 0; font-size: 0.95rem; font-style: italic; }
+
+.footer {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ---------- inputs ---------- */
+
+input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  font: inherit;
+  padding: 9px 10px;
+  border: 3px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: var(--tap);
+}
+
+textarea { min-height: 110px; resize: vertical; }
+
+input:focus, textarea:focus, button:focus {
+  outline: 4px solid var(--pink);
+  outline-offset: 1px;
+}
+
+.big-text { font-size: 1.15rem; font-weight: 700; }
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  min-height: var(--tap);
+  font-weight: 700;
+}
+
+.check input { width: 26px; height: 26px; }
+
+/* ---------- abilities ---------- */
+
+.abilities { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.ability {
+  flex: 1 1 150px;
+  border: 3px solid var(--line);
+  padding: 10px;
+}
+
+.ability-name {
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.ability input {
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+  padding: 2px 4px;
+}
+
+.ability-say {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--yellow);
+  padding: 4px 6px;
+}
+
+/* ---------- counters ---------- */
+
+.counter { display: flex; align-items: center; gap: 8px; }
+
+.counter input {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 900;
+  flex: 1 1 60px;
+  min-width: 0;
+}
+
+.counter.big input { font-size: 2.1rem; }
+
+.counter .of { font-weight: 700; color: var(--muted); }
+
+.step {
+  flex: 0 0 auto;
+  width: var(--tap);
+  height: var(--tap);
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+  background: var(--black);
+  color: var(--yellow);
+  border: 3px solid var(--line);
+  cursor: pointer;
+}
+
+.step:hover { background: var(--pink); color: #fff; }
+
+/* ---------- lists ---------- */
+
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+.item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.item input { flex: 1 1 auto; }
+.item input.small { flex: 0 0 92px; }
+
+.remove {
+  flex: 0 0 auto;
+  min-width: var(--tap);
+  height: var(--tap);
+  font: inherit;
+  font-weight: 700;
+  background: var(--paper);
+  border: 3px solid var(--line);
+  cursor: pointer;
+}
+
+.remove:hover { background: var(--pink); color: #fff; }
+
+.add {
+  margin-top: 10px;
+  min-height: var(--tap);
+  padding: 0 14px;
+  font: inherit;
+  font-weight: 700;
+  background: var(--yellow);
+  border: 3px solid var(--line);
+  cursor: pointer;
+}
+
+.add:hover { background: var(--pink); color: #fff; }
+
+.empty { color: var(--muted); font-style: italic; }
+
+/* ---------- dialog ---------- */
+
+dialog {
+  border: 4px solid var(--line);
+  padding: 18px;
+  max-width: 420px;
+}
+
+dialog h2 { background: none; color: var(--ink); padding: 0; display: block; }
+
+dialog menu {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+dialog button {
+  min-height: var(--tap);
+  padding: 0 14px;
+  font: inherit;
+  font-weight: 700;
+  border: 3px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+}
+
+dialog button.danger { background: var(--black); color: var(--yellow); }
+
+/* ---------- print ---------- */
+
+@media print {
+  .bar, .add, .remove, .step, .help, .footer { display: none !important; }
+  body { font-size: 12pt; }
+  main { max-width: none; padding: 0; }
+  .block { break-inside: avoid; border-width: 2px; }
+  input, textarea { border-width: 1px; }
+  h2 { background: none; color: #000; border-bottom: 2px solid #000; padding: 0 0 2px; }
+  .ability-say { background: none; padding: 0; }
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MÖRK BORG Sheet</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="stylesheet" href="sheet.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-title">MÖRK BORG</div>
+  <div class="bar-buttons">
+    <button type="button" id="btn-new">New scvm</button>
+    <button type="button" id="btn-export">Save to file</button>
+    <button type="button" id="btn-import">Load from file</button>
+    <button type="button" id="btn-print">Print</button>
+  </div>
+</header>
+
+<main id="sheet">
+
+  <section class="block">
+    <label class="lbl" for="f-name">Name</label>
+    <input class="big-text" id="f-name" type="text" autocomplete="off">
+    <label class="lbl" for="f-class">Class</label>
+    <input class="big-text" id="f-class" type="text" autocomplete="off">
+    <p class="note" id="class-desc"></p>
+  </section>
+
+  <section class="block">
+    <h2>Abilities</h2>
+    <p class="help">To test an ability: roll a d20 in the dice tray and add the number.
+      You need 12 or more, unless the GM says otherwise.</p>
+    <div id="abilities" class="abilities"></div>
+  </section>
+
+  <section class="block">
+    <h2>Hit points</h2>
+    <div class="counter big">
+      <button type="button" class="step" data-step="hp:-1" aria-label="Lose one hit point">&minus;</button>
+      <input id="f-hp" type="number" inputmode="numeric">
+      <span class="of">of</span>
+      <input id="f-hpmax" type="number" inputmode="numeric">
+      <button type="button" class="step" data-step="hp:1" aria-label="Gain one hit point">+</button>
+    </div>
+    <p class="help">At 0 or less you are broken. Tell the GM.</p>
+  </section>
+
+  <div class="row">
+    <section class="block">
+      <h2>Omens</h2>
+      <div class="counter">
+        <button type="button" class="step" data-step="omens:-1" aria-label="Spend an omen">&minus;</button>
+        <input id="f-omens" type="number" inputmode="numeric">
+        <button type="button" class="step" data-step="omens:1" aria-label="Gain an omen">+</button>
+      </div>
+      <p class="help">Spend one to reroll any die.</p>
+    </section>
+
+    <section class="block">
+      <h2>Powers today</h2>
+      <div class="counter">
+        <button type="button" class="step" data-step="powers:-1" aria-label="Use a power">&minus;</button>
+        <input id="f-powers" type="number" inputmode="numeric">
+        <button type="button" class="step" data-step="powers:1" aria-label="Regain a power">+</button>
+      </div>
+      <p class="help">Uses of scrolls left today.</p>
+    </section>
+
+    <section class="block">
+      <h2>Silver</h2>
+      <div class="counter">
+        <button type="button" class="step" data-step="silver:-1" aria-label="Spend one silver">&minus;</button>
+        <input id="f-silver" type="number" inputmode="numeric">
+        <button type="button" class="step" data-step="silver:1" aria-label="Gain one silver">+</button>
+      </div>
+      <p class="help">Type a new total to change it by more.</p>
+    </section>
+  </div>
+
+  <section class="block">
+    <h2>Armour</h2>
+    <label class="lbl" for="f-armour">What you are wearing</label>
+    <input class="big-text" id="f-armour" type="text" autocomplete="off">
+    <label class="lbl" for="f-armour-dr">Damage it stops</label>
+    <input class="big-text" id="f-armour-dr" type="text" autocomplete="off" placeholder="none">
+    <p class="help">To dodge: roll a d20 and add Agility. You need 12 or more.
+      If you are hit anyway, roll the die above and take off that much damage.</p>
+    <label class="check"><input type="checkbox" id="f-shield"> I have a shield</label>
+  </section>
+
+  <section class="block">
+    <h2>Weapons</h2>
+    <p class="help">To attack: roll a d20, add Strength up close or Presence at range.
+      You need 12 or more. Then roll the damage die.</p>
+    <div id="weapons" class="list"></div>
+    <button type="button" class="add" data-add="weapons">Add a weapon</button>
+  </section>
+
+  <section class="block">
+    <h2>Equipment</h2>
+    <div id="gear" class="list"></div>
+    <button type="button" class="add" data-add="gear">Add equipment</button>
+  </section>
+
+  <section class="block">
+    <h2>Scrolls and powers</h2>
+    <div id="scrolls" class="list"></div>
+    <button type="button" class="add" data-add="scrolls">Add a scroll</button>
+  </section>
+
+  <section class="block">
+    <h2>Notes</h2>
+    <textarea id="f-notes" rows="5"></textarea>
+  </section>
+
+  <p class="footer">Saves itself in this browser as you type.
+    <span id="saved-at"></span></p>
+
+</main>
+
+<dialog id="confirm-new">
+  <form method="dialog">
+    <h2>Roll a new scvm?</h2>
+    <p>This replaces the character on screen. Save the current one to a file first if you want to keep it.</p>
+    <menu>
+      <button value="cancel">Keep this one</button>
+      <button value="ok" class="danger">Roll a new one</button>
+    </menu>
+  </form>
+</dialog>
+
+<input type="file" id="file-input" accept="application/json,.json" hidden>
+
+<script src="data.js"></script>
+<script src="sheet.js"></script>
+</body>
+</html>
