@@ -74,11 +74,11 @@
         </div>
       </div>
       <div>
-        <span class="lbl" title="Type a number straight in to change it by more than one.">Silver</span>
+        <span class="lbl">Silver</span>
+        <!-- No steps here. Silver moves in tens and hundreds, never in ones,
+             so the buttons were decoration. -->
         <div class="counter">
-          <button type="button" class="step" data-step="silver:-1" aria-label="Spend one silver">&minus;</button>
-          <input id="f-silver" type="number" inputmode="numeric">
-          <button type="button" class="step" data-step="silver:1" aria-label="Gain one silver">+</button>
+          <input id="f-silver" type="number" inputmode="numeric" aria-label="Silver">
         </div>
       </div>
     </div>
