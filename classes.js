@@ -184,10 +184,10 @@ const MB_WEAPON_TABLE = [
   { name: 'Knife', detail: 'd4' },
   { name: 'Warhammer', detail: 'd6' },
   { name: 'Sword', detail: 'd6' },
-  { name: 'Bow', detail: 'd6, Presence+10 arrows' },
+  { name: 'Bow', detail: 'd6', note: 'Comes with Presence+10 arrows' },
   { name: 'Flail', detail: 'd8' },
-  { name: 'Crossbow', detail: 'd8, Presence+10 bolts' },
-  { name: 'Zweihänder', detail: 'd10' }
+  { name: 'Crossbow', detail: 'd8', note: 'Comes with Presence+10 bolts' },
+  { name: 'Zweihänder', detail: 'd10', note: 'Two handed. Scrolls never work while wielding it' }
 ];
 
 /* The armour table, page 21. Rolled with a d4, or d2 if you start with a
@@ -204,38 +204,38 @@ const MB_ARMOUR_TABLE = [
 const MB_KIT_D6 = [
   null,
   null,
-  { name: 'Backpack', detail: 'holds 7' },
-  { name: 'Sack', detail: 'holds 10' },
+  { name: 'Backpack', detail: '', note: 'Holds 7 normal-sized items' },
+  { name: 'Sack', detail: '', note: 'Holds 10 normal-sized items' },
   { name: 'Small wagon', detail: '' },
-  { name: 'Donkey', detail: 'not bad' }
+  { name: 'Donkey', detail: '', note: 'Not bad' }
 ];
 
 const MB_KIT_D12_A = [
   { name: 'Rope, 30ft', detail: '' },
   { name: 'Torches', detail: 'Presence+4' },
-  { name: 'Lantern with oil', detail: 'Presence+6 hours' },
+  { name: 'Lantern with oil', detail: '', note: 'Burns for Presence+6 hours' },
   { name: 'Magnesium strip', detail: '' },
   { name: 'Random unclean scroll', detail: '', isScroll: 'unclean' },
   { name: 'Sharp needle', detail: '' },
-  { name: 'Medicine chest', detail: 'Presence+4 uses, stops bleeding and infection, heals d6 HP' },
+  { name: 'Medicine chest', detail: '', note: 'Presence+4 uses. Stops bleeding and infection, heals d6 HP' },
   { name: 'Metal file and lockpicks', detail: '' },
-  { name: 'Bear trap', detail: 'Presence DR14 to spot, d8 damage' },
-  { name: 'Bomb', detail: 'sealed bottle, d10 damage' },
-  { name: 'Bottle of red poison', detail: 'd4 doses, Toughness DR12 or d10 damage' },
+  { name: 'Bear trap', detail: '', note: 'Presence DR14 to spot, d8 damage' },
+  { name: 'Bomb', detail: '', note: 'Sealed bottle, d10 damage' },
+  { name: 'Red poison', detail: 'd4 doses', note: 'Toughness DR12 or d10 damage' },
   { name: 'Silver crucifix', detail: '' }
 ];
 
 const MB_KIT_D12_B = [
-  { name: 'Life elixir', detail: 'd4 doses, heals d6 HP and removes infection' },
+  { name: 'Life elixir', detail: 'd4 doses', note: 'Heals d6 HP and removes infection' },
   { name: 'Random sacred scroll', detail: '', isScroll: 'sacred' },
-  { name: 'Small but vicious dog', detail: 'd6+2 HP, bite d4, obeys only you' },
-  { name: 'Monkeys', detail: 'd4 of them, d4+2 HP, punch or bite d4' },
-  { name: 'Exquisite perfume', detail: 'worth 25s' },
-  { name: 'Toolbox', detail: 'nails, tongs, hammer, small saw, drill' },
+  { name: 'Small but vicious dog', detail: '', note: 'd6+2 HP, bite d4, obeys only you' },
+  { name: 'Monkeys', detail: 'd4', note: 'd4+2 HP each, punch or bite d4. They ignore you but love you' },
+  { name: 'Exquisite perfume', detail: '25s' },
+  { name: 'Toolbox', detail: '', note: 'Nails, tongs, hammer, small saw, drill' },
   { name: 'Heavy chain', detail: '15 feet' },
   { name: 'Grappling hook', detail: '' },
-  { name: 'Shield', detail: '-1 damage, or break it to ignore one attack', isShield: true },
+  { name: 'Shield', detail: '', note: 'Stops 1 more damage, or break it to ignore one attack', isShield: true },
   { name: 'Crowbar', detail: 'd4 damage' },
-  { name: 'Lard', detail: 'five meals at a pinch' },
+  { name: 'Lard', detail: '', note: 'May function as five meals in a pinch' },
   { name: 'Tent', detail: '' }
 ];

@@ -108,12 +108,12 @@
       if (!entry) return;
       if (entry.isScroll) {
         // The Deserter cannot read, so a scroll is no use to them.
-        if (cls.illiterate) { gear.push({ name: 'A scroll you cannot read', detail: 'Eat it or use it as toilet paper.' }); return; }
+        if (cls.illiterate) { gear.push({ name: 'A scroll you cannot read', detail: '', note: 'Eat it or use it as toilet paper' }); return; }
         scrolls.push(randomScroll(entry.isScroll));
         return;
       }
       if (entry.isShield) { shield = true; }
-      gear.push({ name: entry.name, detail: entry.detail });
+      gear.push({ name: entry.name, detail: entry.detail, note: entry.note || '' });
     }
 
     addKit(MB_KIT_D6[roll(6) - 1]);
@@ -161,7 +161,7 @@
       armour: armour.name,
       armourDr: armour.dr,
       shield: shield,
-      weapons: [{ name: weapon.name, detail: weapon.detail }],
+      weapons: [{ name: weapon.name, detail: weapon.detail, note: weapon.note || '' }],
       features: features,
       gear: gear,
       scrolls: scrolls,
@@ -273,7 +273,7 @@
         return MB_DATA.weapons.map(function (w) {
           return {
             text: w.name + '  ' + w.damageDie + (w.costSilver ? '  ' + w.costSilver + 's' : ''),
-            row: { name: w.name, detail: w.damageDie + (w.special ? '. ' + w.special : '') }
+            row: { name: w.name, detail: w.damageDie, note: w.special || '' }
           };
         });
       }
@@ -284,7 +284,7 @@
         return MB_DATA.equipment.map(function (e) {
           return {
             text: e.name + (e.costSilver ? '  ' + e.costSilver + 's' : ''),
-            row: { name: e.name, detail: e.description || '' }
+            row: { name: e.name, detail: '', note: e.description || '' }
           };
         });
       }
@@ -325,6 +325,9 @@
       name.value = row.name || '';
       name.placeholder = cfg.placeholder;
       name.setAttribute('aria-label', cfg.placeholder);
+      // What the book says about it, for anyone who hovers. It never takes a
+      // line of the sheet, so a picked row looks exactly like a rolled one.
+      if (row.note) name.title = row.note;
       name.addEventListener('input', function () {
         row.name = name.value;
         queueSave();
@@ -510,7 +513,7 @@
   }
 
   function addRow(key, row) {
-    character[key].push({ name: row.name || '', detail: row.detail || '' });
+    character[key].push({ name: row.name || '', detail: row.detail || '', note: row.note || '' });
     drawList(key);
     save();
     var host = document.getElementById(LISTS[key].hostId);

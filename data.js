@@ -64,7 +64,7 @@ const MB_DATA = {
  "weapons": [
   {
    "id": "femur",
-   "name": "Femur Club",
+   "name": "Femur",
    "type": "melee",
    "damageDie": "d4",
    "costSilver": 0,
@@ -168,7 +168,7 @@ const MB_DATA = {
   },
   {
    "id": "battle-axe",
-   "name": "Battle Axe",
+   "name": "Battle axe",
    "type": "melee",
    "damageDie": "d8",
    "costSilver": 35,
