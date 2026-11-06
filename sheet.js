@@ -165,6 +165,7 @@
       features: features,
       gear: gear,
       scrolls: scrolls,
+      who: {},
       notes: ''
     };
   }
@@ -364,10 +365,73 @@
     document.getElementById('class-note').textContent = character.classNote || '';
 
     drawAbilities();
+    drawWhoYouAre();
     drawList('features');
     drawList('weapons');
     drawList('gear');
     drawList('scrolls');
+  }
+
+  /* ---------- who you are ---------- */
+
+  function rollTable(key) {
+    var t = MB_TABLES[key];
+    var out = [];
+    var pool = t.entries.slice();
+    for (var i = 0; i < (t.rolls || 1); i++) {
+      out.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    }
+    return out.join(t.join || ' ');
+  }
+
+  function drawWhoYouAre() {
+    var host = document.getElementById('whoyouare');
+    if (!host) return;
+    if (!character.who || typeof character.who !== 'object') character.who = {};
+    host.innerHTML = '';
+
+    MB_TABLE_ORDER.forEach(function (key) {
+      var t = MB_TABLES[key];
+      var row = el('div', 'who');
+
+      var label = el('span', 'who-label', t.label);
+      label.title = t.hint;
+
+      var field = el('textarea', 'who-field');
+      field.value = character.who[key] || '';
+      field.placeholder = 'Write it, or press the die';
+      field.setAttribute('aria-label', t.label);
+      field.rows = 1;
+
+      var grow = function () {
+        field.style.height = 'auto';
+        var border = field.offsetHeight - field.clientHeight;
+        field.style.height = (field.scrollHeight + border) + 'px';
+      };
+
+      field.addEventListener('input', function () {
+        character.who[key] = field.value;
+        grow();
+        queueSave();
+      });
+
+      var die = el('button', 'die', '⚄');
+      die.type = 'button';
+      die.title = 'Roll: ' + t.hint;
+      die.setAttribute('aria-label', 'Roll ' + t.label);
+      die.addEventListener('click', function () {
+        character.who[key] = rollTable(key);
+        field.value = character.who[key];
+        grow();
+        save();
+      });
+
+      row.appendChild(label);
+      row.appendChild(field);
+      row.appendChild(die);
+      host.appendChild(row);
+      setTimeout(grow, 0);
+    });
   }
 
   /* ---------- wiring ---------- */
@@ -406,9 +470,10 @@
   }
 
   function bindAdds() {
-    document.querySelectorAll('.add').forEach(function (btn) {
+    document.querySelectorAll('.add[data-add]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var key = btn.getAttribute('data-add');
+        if (!LISTS[key]) return;
         character[key].push({ name: '', detail: '' });
         drawList(key);
         save();
@@ -487,6 +552,15 @@
       draw();
       save();
     });
+
+    var rollAll = document.getElementById('btn-roll-all');
+    if (rollAll) {
+      rollAll.addEventListener('click', function () {
+        MB_TABLE_ORDER.forEach(function (k) { character.who[k] = rollTable(k); });
+        drawWhoYouAre();
+        save();
+      });
+    }
 
     document.getElementById('btn-export').addEventListener('click', exportFile);
     document.getElementById('btn-print').addEventListener('click', function () { window.print(); });

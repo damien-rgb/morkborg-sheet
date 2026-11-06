@@ -19,8 +19,6 @@
     <button type="button" id="btn-export" title="Save this character to a file">Save</button>
     <button type="button" id="btn-import" title="Load a character from a file">Load</button>
     <button type="button" id="btn-print" title="Print a clean paper sheet">Print</button>
-    <button type="button" id="btn-better"
-      title="1. More hit points: roll 6d10. Equal to your maximum or higher, add a d6 to the maximum.&#10;2. Every ability: roll a d6 against each. Equal or higher, up by 1. Lower, down by 1. Never above +6 or below -3. Anything from -3 to +1 always goes up, unless the d6 shows a 1.&#10;3. In the debris: roll a d6. 1 to 3 nothing, 4 is 3d10 silver, 5 an unclean scroll, 6 a sacred scroll.">Level up</button>
   </div>
 </header>
 
@@ -97,27 +95,48 @@
   </section>
 
   <section class="block">
-    <h2>Your class</h2>
+    <div class="head">
+      <h2>Your class</h2>
+      <button type="button" class="add" data-add="features"
+        title="Add a row" aria-label="Add a row">+</button>
+    </div>
     <div id="features" class="list"></div>
-    <button type="button" class="add" data-add="features">Add</button>
   </section>
 
   <section class="block">
-    <h2 title="Attack: roll a d20, add Strength up close or Presence at range, DR12. Then roll the damage die.">Weapons</h2>
+    <div class="head">
+      <h2 title="Attack: roll a d20, add Strength up close or Presence at range, DR12. Then roll the damage die.">Weapons</h2>
+      <button type="button" class="add" data-add="weapons"
+        title="Add a row" aria-label="Add a row">+</button>
+    </div>
     <div id="weapons" class="list"></div>
-    <button type="button" class="add" data-add="weapons">Add</button>
   </section>
 
   <section class="block">
-    <h2>Equipment</h2>
+    <div class="head">
+      <h2>Equipment</h2>
+      <button type="button" class="add" data-add="gear"
+        title="Add a row" aria-label="Add a row">+</button>
+    </div>
     <div id="gear" class="list"></div>
-    <button type="button" class="add" data-add="gear">Add</button>
   </section>
 
   <section class="block">
-    <h2 title="Reading a scroll: test Presence DR12. Fail and you lose d2 HP and are dizzy for an hour.">Scrolls</h2>
+    <div class="head">
+      <h2 title="Reading a scroll: test Presence DR12. Fail and you lose d2 HP and are dizzy for an hour.">Scrolls</h2>
+      <button type="button" class="add" data-add="scrolls"
+        title="Add a row" aria-label="Add a row">+</button>
+    </div>
     <div id="scrolls" class="list"></div>
-    <button type="button" class="add" data-add="scrolls">Add</button>
+  </section>
+
+  <section class="block">
+    <div class="head">
+      <h2 title="Write your own, or press a die to be handed one from the book">Who you are</h2>
+      <button type="button" id="btn-roll-all" class="add"
+        title="Roll all four" aria-label="Roll all four">Roll all</button>
+    </div>
+    <div id="whoyouare" class="list"></div>
   </section>
 
   <section class="block">
@@ -145,6 +164,7 @@
 
 <script src="data.js"></script>
 <script src="classes.js"></script>
+<script src="tables.js"></script>
 <script src="sheet.js"></script>
 </body>
 </html>
