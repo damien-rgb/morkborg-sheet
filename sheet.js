@@ -266,10 +266,10 @@
   // One list drawer for weapons, gear and scrolls. Each row is a name, a short
   // detail, and a remove button. Nothing is hidden behind a click.
   var LISTS = {
-    features: { hostId: 'features', detail: 'What it does', placeholder: 'Class feature', empty: 'Nothing from your class.' },
+    features: { hostId: 'features', detail: 'What it does', placeholder: 'Class feature', empty: 'Nothing from your class.', wordy: true },
     weapons: { hostId: 'weapons', detail: 'Damage', placeholder: 'Sword', empty: 'No weapons yet.' },
     gear:    { hostId: 'gear',    detail: 'Qty', detailLabel: 'How many', placeholder: 'Torches', empty: 'No equipment yet.' },
-    scrolls: { hostId: 'scrolls', detail: 'What it does', placeholder: 'Scroll name', empty: 'No scrolls.' }
+    scrolls: { hostId: 'scrolls', detail: 'What it does', placeholder: 'Scroll name', empty: 'No scrolls.', wordy: true }
   };
 
   function drawList(key) {
@@ -298,12 +298,27 @@
         queueSave();
       });
 
-      var detail = el('input');
-      detail.type = 'text';
-      detail.className = key === 'scrolls' ? '' : 'small';
+      // Class features and scrolls carry a sentence or two of rules text, so
+      // they get a box that grows to fit. Everything else is a short field.
+      var wordy = cfg.wordy;
+      var detail = el(wordy ? 'textarea' : 'input');
+      if (!wordy) detail.type = 'text';
+      detail.className = wordy ? 'wordy' : 'small';
       detail.value = row.detail || '';
       detail.placeholder = cfg.detail;
       detail.setAttribute('aria-label', cfg.detailLabel || cfg.detail);
+      if (wordy) {
+        detail.rows = 2;
+        var grow = function () {
+          detail.style.height = 'auto';
+          // The box is border-box, so the border has to be added back on or
+          // the last line stays hidden.
+          var border = detail.offsetHeight - detail.clientHeight;
+          detail.style.height = (detail.scrollHeight + border) + 'px';
+        };
+        detail.addEventListener('input', grow);
+        setTimeout(grow, 0);
+      }
       detail.addEventListener('input', function () {
         row.detail = detail.value;
         queueSave();

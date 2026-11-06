@@ -221,8 +221,25 @@ input:focus, textarea:focus, button:focus {
   align-items: flex-start;
 }
 
-.item input { flex: 1 1 auto; }
+.item input, .item textarea { flex: 1 1 auto; }
 .item input.small { flex: 0 0 92px; }
+
+/* Rules text wraps and the box grows, rather than hiding the end of a sentence
+   inside a one-line field. */
+.item textarea.wordy {
+  flex: 2 1 160px;
+  min-height: var(--tap);
+  resize: vertical;
+  overflow: hidden;
+  line-height: 1.35;
+}
+
+/* On a narrow panel, a feature and its rules text stack instead of squeezing. */
+@media (max-width: 520px) {
+  .item:has(textarea.wordy) { flex-wrap: wrap; }
+  .item:has(textarea.wordy) > input { flex: 1 1 100%; }
+  .item:has(textarea.wordy) > textarea { flex: 1 1 100%; }
+}
 
 .remove {
   flex: 0 0 auto;
