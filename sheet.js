@@ -333,8 +333,19 @@
       card.appendChild(kill);
       host.appendChild(card);
 
-      // Sized once the card is in the document and has a real width.
-      setTimeout(grow, 0);
+      // A quantity or a damage die rides on the name's line. A paragraph of
+      // rules text takes the full width below it. Decided by length, and
+      // rechecked whenever the text is edited, so it is never wrong for long.
+      var setShape = function () {
+        // Only a true short code rides beside the name: a damage die, a count.
+        // Anything longer takes the full width, which also frees the name box.
+        var brief = (detail.value || '').length <= 6;
+        card.classList.toggle('brief', brief);
+        if (!brief) grow();
+        else detail.style.height = '';
+      };
+      detail.addEventListener('input', setShape);
+      setTimeout(setShape, 0);
     });
   }
 

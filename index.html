@@ -13,8 +13,8 @@
   <div class="bar-title">MÖRK BORG</div>
   <div class="bar-buttons">
     <button type="button" id="btn-new">New scvm</button>
-    <button type="button" id="btn-export">Save to file</button>
-    <button type="button" id="btn-import">Load from file</button>
+    <button type="button" id="btn-export">Save</button>
+    <button type="button" id="btn-import">Load</button>
     <button type="button" id="btn-print">Print</button>
   </div>
 </header>
@@ -22,10 +22,16 @@
 <main id="sheet">
 
   <section class="block">
-    <label class="lbl" for="f-name">Name</label>
-    <input class="big-text" id="f-name" type="text" autocomplete="off">
-    <label class="lbl" for="f-class">Class</label>
-    <input class="big-text" id="f-class" type="text" autocomplete="off">
+    <div class="pair">
+      <div>
+        <label class="lbl" for="f-name">Name</label>
+        <input class="big-text" id="f-name" type="text" autocomplete="off">
+      </div>
+      <div>
+        <label class="lbl" for="f-class">Class</label>
+        <input class="big-text" id="f-class" type="text" autocomplete="off">
+      </div>
+    </div>
     <p class="note" id="class-desc"></p>
   </section>
 
@@ -46,47 +52,50 @@
       <button type="button" class="step" data-step="hp:1" aria-label="Gain one hit point">+</button>
     </div>
     <p class="help">At 0 or less you are broken. Tell the GM.</p>
+
+    <div class="three">
+      <div>
+        <span class="lbl">Omens</span>
+        <div class="counter">
+          <button type="button" class="step" data-step="omens:-1" aria-label="Spend an omen">&minus;</button>
+          <input id="f-omens" type="number" inputmode="numeric">
+          <button type="button" class="step" data-step="omens:1" aria-label="Gain an omen">+</button>
+        </div>
+        <p class="help">Spend one to reroll any die.</p>
+      </div>
+      <div>
+        <span class="lbl">Powers today</span>
+        <div class="counter">
+          <button type="button" class="step" data-step="powers:-1" aria-label="Use a power">&minus;</button>
+          <input id="f-powers" type="number" inputmode="numeric">
+          <button type="button" class="step" data-step="powers:1" aria-label="Regain a power">+</button>
+        </div>
+        <p class="help">Each morning roll d4 and add Presence.</p>
+      </div>
+      <div>
+        <span class="lbl">Silver</span>
+        <div class="counter">
+          <button type="button" class="step" data-step="silver:-1" aria-label="Spend one silver">&minus;</button>
+          <input id="f-silver" type="number" inputmode="numeric">
+          <button type="button" class="step" data-step="silver:1" aria-label="Gain one silver">+</button>
+        </div>
+        <p class="help">Type a total to change it by more.</p>
+      </div>
+    </div>
   </section>
-
-  <div class="row">
-    <section class="block">
-      <h2>Omens</h2>
-      <div class="counter">
-        <button type="button" class="step" data-step="omens:-1" aria-label="Spend an omen">&minus;</button>
-        <input id="f-omens" type="number" inputmode="numeric">
-        <button type="button" class="step" data-step="omens:1" aria-label="Gain an omen">+</button>
-      </div>
-      <p class="help">Spend one to reroll any die.</p>
-    </section>
-
-    <section class="block">
-      <h2>Powers today</h2>
-      <div class="counter">
-        <button type="button" class="step" data-step="powers:-1" aria-label="Use a power">&minus;</button>
-        <input id="f-powers" type="number" inputmode="numeric">
-        <button type="button" class="step" data-step="powers:1" aria-label="Regain a power">+</button>
-      </div>
-      <p class="help">Each morning roll a d4 and add Presence. That is how many times
-      you can read a scroll today.</p>
-    </section>
-
-    <section class="block">
-      <h2>Silver</h2>
-      <div class="counter">
-        <button type="button" class="step" data-step="silver:-1" aria-label="Spend one silver">&minus;</button>
-        <input id="f-silver" type="number" inputmode="numeric">
-        <button type="button" class="step" data-step="silver:1" aria-label="Gain one silver">+</button>
-      </div>
-      <p class="help">Type a new total to change it by more.</p>
-    </section>
-  </div>
 
   <section class="block">
     <h2>Armour</h2>
-    <label class="lbl" for="f-armour">What you are wearing</label>
-    <input class="big-text" id="f-armour" type="text" autocomplete="off">
-    <label class="lbl" for="f-armour-dr">Damage it stops</label>
-    <input class="big-text" id="f-armour-dr" type="text" autocomplete="off" placeholder="none">
+    <div class="pair">
+      <div>
+        <label class="lbl" for="f-armour">What you are wearing</label>
+        <input class="big-text" id="f-armour" type="text" autocomplete="off">
+      </div>
+      <div>
+        <label class="lbl" for="f-armour-dr">Damage it stops</label>
+        <input class="big-text" id="f-armour-dr" type="text" autocomplete="off" placeholder="none">
+      </div>
+    </div>
     <p class="help">To dodge: roll a d20 and add Agility. You need 12 or more.
       If you are hit anyway, roll the die above and take off that much damage.</p>
     <label class="check"><input type="checkbox" id="f-shield"> I have a shield</label>
@@ -135,7 +144,7 @@
 
   <section class="block">
     <h2>Notes</h2>
-    <textarea id="f-notes" rows="5"></textarea>
+    <textarea id="f-notes" rows="3"></textarea>
   </section>
 
   <p class="footer">Saves itself in this browser as you type.
