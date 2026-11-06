@@ -264,6 +264,46 @@
     scrolls: { hostId: 'scrolls', detail: 'What it does', placeholder: 'Scroll name', empty: 'No scrolls.' }
   };
 
+  // What the plus offers for each list, taken from the book data already here.
+  // Anything not listed gets a blank row straight away, as before.
+  var PICKERS = {
+    weapons: {
+      label: 'weapon',
+      options: function () {
+        return MB_DATA.weapons.map(function (w) {
+          return {
+            text: w.name + '  ' + w.damageDie + (w.costSilver ? '  ' + w.costSilver + 's' : ''),
+            row: { name: w.name, detail: w.damageDie + (w.special ? '. ' + w.special : '') }
+          };
+        });
+      }
+    },
+    gear: {
+      label: 'equipment',
+      options: function () {
+        return MB_DATA.equipment.map(function (e) {
+          return {
+            text: e.name + (e.costSilver ? '  ' + e.costSilver + 's' : ''),
+            row: { name: e.name, detail: e.description || '' }
+          };
+        });
+      }
+    },
+    scrolls: {
+      label: 'scroll',
+      groups: true,
+      options: function () {
+        return MB_DATA.scrolls.map(function (sc) {
+          return {
+            group: sc.type === 'sacred' ? 'Sacred' : 'Unclean',
+            text: sc.name,
+            row: { name: sc.name, detail: sc.description || '' }
+          };
+        });
+      }
+    }
+  };
+
   function drawList(key) {
     var cfg = LISTS[key];
     var host = document.getElementById(cfg.hostId);
@@ -469,17 +509,72 @@
     });
   }
 
+  function addRow(key, row) {
+    character[key].push({ name: row.name || '', detail: row.detail || '' });
+    drawList(key);
+    save();
+    var host = document.getElementById(LISTS[key].hostId);
+    var names = host.querySelectorAll('.row-name');
+    if (names.length) names[names.length - 1].focus();
+  }
+
+  // The plus opens one native dropdown above the list. Native because the
+  // keyboard, type-to-jump and scrolling all come free, and 47 items need them.
+  function openPicker(key, host) {
+    var existing = host.parentNode.querySelector('.picker');
+    if (existing) { existing.remove(); return; }
+
+    var picker = el('div', 'picker');
+    var select = el('select');
+    select.setAttribute('aria-label', 'Add a ' + PICKERS[key].label);
+
+    var blank = el('option', null, 'Blank row');
+    blank.value = '';
+    select.appendChild(blank);
+
+    var opts = PICKERS[key].options();
+    var groups = {};
+    opts.forEach(function (o, i) {
+      var opt = el('option', null, o.text);
+      opt.value = String(i);
+      if (o.group) {
+        if (!groups[o.group]) {
+          groups[o.group] = document.createElement('optgroup');
+          groups[o.group].label = o.group;
+          select.appendChild(groups[o.group]);
+        }
+        groups[o.group].appendChild(opt);
+      } else {
+        select.appendChild(opt);
+      }
+    });
+
+    select.addEventListener('change', function () {
+      var chosen = select.value === '' ? { name: '', detail: '' } : opts[parseInt(select.value, 10)].row;
+      picker.remove();
+      addRow(key, chosen);
+    });
+
+    var cancel = el('button', 'remove', '×');
+    cancel.type = 'button';
+    cancel.title = 'Close';
+    cancel.setAttribute('aria-label', 'Close');
+    cancel.addEventListener('click', function () { picker.remove(); });
+
+    picker.appendChild(select);
+    picker.appendChild(cancel);
+    host.parentNode.insertBefore(picker, host);
+    select.focus();
+  }
+
   function bindAdds() {
     document.querySelectorAll('.add[data-add]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var key = btn.getAttribute('data-add');
         if (!LISTS[key]) return;
-        character[key].push({ name: '', detail: '' });
-        drawList(key);
-        save();
         var host = document.getElementById(LISTS[key].hostId);
-        var inputs = host.querySelectorAll('input');
-        if (inputs.length) inputs[inputs.length - 2].focus();
+        if (PICKERS[key]) openPicker(key, host);
+        else addRow(key, { name: '', detail: '' });
       });
     });
   }
