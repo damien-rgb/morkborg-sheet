@@ -13,10 +13,10 @@
 
   var STORAGE_KEY = 'morkborg-simple-sheet';
   var ABILITIES = [
-    { key: 'strength',  label: 'Strength' },
-    { key: 'agility',   label: 'Agility' },
-    { key: 'presence',  label: 'Presence' },
-    { key: 'toughness', label: 'Toughness' }
+    { key: 'strength',  label: 'Strength',  short: 'STR' },
+    { key: 'agility',   label: 'Agility',   short: 'AGI' },
+    { key: 'presence',  label: 'Presence',  short: 'PRE' },
+    { key: 'toughness', label: 'Toughness', short: 'TOU' }
   ];
 
   var character = null;
@@ -180,7 +180,7 @@
       // works for the session; only the remembering is lost.
       console.warn('Could not save the sheet:', err);
       var at = document.getElementById('saved-at');
-      if (at) at.textContent = 'Not saving in this browser. Use Save to file.';
+      if (at) at.textContent = 'Not saving here. Use Save.';
     }
   }
 
@@ -195,7 +195,7 @@
     var d = new Date();
     var hh = String(d.getHours()).padStart(2, '0');
     var mm = String(d.getMinutes()).padStart(2, '0');
-    at.textContent = 'Last saved ' + hh + ':' + mm + '.';
+    at.textContent = 'Saved ' + hh + ':' + mm;
   }
 
   function load() {
@@ -228,41 +228,29 @@
     host.innerHTML = '';
 
     ABILITIES.forEach(function (a) {
-      // One line per ability: the name, the number, and the sentence to read
-      // out. A row costs a quarter of the height of a box and reads as an
-      // instruction rather than as a stat block.
-      var row = el('div', 'ability');
+      var box = el('div', 'ability');
 
       var id = 'ab-' + a.key;
-      var label = el('label', 'ability-name', a.label);
+      var label = el('label', 'ability-name', a.short);
       label.setAttribute('for', id);
+      label.title = a.label;
 
       var input = el('input');
       input.type = 'number';
       input.id = id;
       input.inputMode = 'numeric';
       input.value = character.abilities[a.key];
-
-      var say = el('div', 'ability-say');
-
-      function refresh() {
-        say.textContent = 'Roll d20, ' +
-          (character.abilities[a.key] < 0 ? 'take off ' : 'add ') +
-          Math.abs(character.abilities[a.key]);
-      }
+      input.title = a.label;
 
       input.addEventListener('input', function () {
         var v = parseInt(input.value, 10);
         character.abilities[a.key] = isNaN(v) ? 0 : v;
-        refresh();
         queueSave();
       });
 
-      refresh();
-      row.appendChild(label);
-      row.appendChild(input);
-      row.appendChild(say);
-      host.appendChild(row);
+      box.appendChild(label);
+      box.appendChild(input);
+      host.appendChild(box);
     });
   }
 
@@ -323,8 +311,10 @@
         queueSave();
       });
 
-      var kill = el('button', 'remove', 'Remove');
+      var kill = el('button', 'remove', '×');
       kill.type = 'button';
+      kill.title = 'Remove';
+      kill.setAttribute('aria-label', 'Remove');
       kill.addEventListener('click', function () {
         rows.splice(i, 1);
         drawList(key);

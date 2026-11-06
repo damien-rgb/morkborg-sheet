@@ -9,13 +9,18 @@
 </head>
 <body>
 
+<!-- Rules reminders live in title attributes, not on the page. Anyone who wants
+     one hovers for it. Players who already know the game are not made to scroll
+     past it every session. -->
+
 <header class="bar">
-  <div class="bar-title">MÖRK BORG</div>
   <div class="bar-buttons">
-    <button type="button" id="btn-new">New scvm</button>
-    <button type="button" id="btn-export">Save</button>
-    <button type="button" id="btn-import">Load</button>
-    <button type="button" id="btn-print">Print</button>
+    <button type="button" id="btn-new" title="Roll a brand new character">New scvm</button>
+    <button type="button" id="btn-export" title="Save this character to a file">Save</button>
+    <button type="button" id="btn-import" title="Load a character from a file">Load</button>
+    <button type="button" id="btn-print" title="Print a clean paper sheet">Print</button>
+    <button type="button" id="btn-better"
+      title="1. More hit points: roll 6d10. Equal to your maximum or higher, add a d6 to the maximum.&#10;2. Every ability: roll a d6 against each. Equal or higher, up by 1. Lower, down by 1. Never above +6 or below -3. Anything from -3 to +1 always goes up, unless the d6 shows a 1.&#10;3. In the debris: roll a d6. 1 to 3 nothing, 4 is 3d10 silver, 5 an unclean scroll, 6 a sacred scroll.">Level up</button>
   </div>
 </header>
 
@@ -36,26 +41,24 @@
   </section>
 
   <section class="block">
-    <h2>Abilities</h2>
-    <p class="help">Roll a d20 in the tray and add the number. You need 12, unless the GM
-      says otherwise.</p>
+    <h2 title="Test an ability: roll a d20 and add the number. DR12 unless the GM says otherwise.">Abilities</h2>
     <div id="abilities" class="abilities"></div>
+    <p class="note" id="class-note"></p>
   </section>
 
   <section class="block">
-    <h2>Hit points</h2>
-    <div class="counter big">
+    <div class="hp-row">
+      <span class="lbl" title="At 0 or less you are broken.">HP</span>
       <button type="button" class="step" data-step="hp:-1" aria-label="Lose one hit point">&minus;</button>
-      <input id="f-hp" type="number" inputmode="numeric">
-      <span class="of">of</span>
-      <input id="f-hpmax" type="number" inputmode="numeric">
+      <input id="f-hp" type="number" inputmode="numeric" title="Current hit points">
+      <span class="of">/</span>
+      <input id="f-hpmax" type="number" inputmode="numeric" title="Maximum hit points">
       <button type="button" class="step" data-step="hp:1" aria-label="Gain one hit point">+</button>
     </div>
-    <p class="help">At 0 or less you are broken. Tell the GM.</p>
 
     <div class="three">
       <div>
-        <span class="lbl">Omens</span>
+        <span class="lbl" title="Spend one to reroll any die.">Omens</span>
         <div class="counter">
           <button type="button" class="step" data-step="omens:-1" aria-label="Spend an omen">&minus;</button>
           <input id="f-omens" type="number" inputmode="numeric">
@@ -63,7 +66,7 @@
         </div>
       </div>
       <div>
-        <span class="lbl">Powers today</span>
+        <span class="lbl" title="Uses of Powers left today. Each morning roll d4 and add Presence.">Powers</span>
         <div class="counter">
           <button type="button" class="step" data-step="powers:-1" aria-label="Use a power">&minus;</button>
           <input id="f-powers" type="number" inputmode="numeric">
@@ -71,7 +74,7 @@
         </div>
       </div>
       <div>
-        <span class="lbl">Silver</span>
+        <span class="lbl" title="Type a number straight in to change it by more than one.">Silver</span>
         <div class="counter">
           <button type="button" class="step" data-step="silver:-1" aria-label="Spend one silver">&minus;</button>
           <input id="f-silver" type="number" inputmode="numeric">
@@ -79,66 +82,42 @@
         </div>
       </div>
     </div>
-    <p class="three-note">Omens reroll any die. Powers: each morning roll d4 and add
-      Presence. Type a number straight in to change it by more than one.</p>
   </section>
 
   <section class="block">
-    <h2>Armour</h2>
-    <div class="pair">
-      <div>
-        <label class="lbl" for="f-armour">What you are wearing</label>
-        <input class="big-text" id="f-armour" type="text" autocomplete="off">
-      </div>
-      <div>
-        <label class="lbl" for="f-armour-dr">Damage it stops</label>
-        <input class="big-text" id="f-armour-dr" type="text" autocomplete="off" placeholder="none">
-      </div>
+    <h2 title="Defend: roll a d20 and add Agility, DR12. If you are hit, roll the armour die and take that much off the damage.">Armour</h2>
+    <div class="armour-row">
+      <input class="big-text" id="f-armour" type="text" autocomplete="off"
+        placeholder="No armour" aria-label="Armour worn" title="What you are wearing">
+      <input class="big-text" id="f-armour-dr" type="text" autocomplete="off"
+        placeholder="none" aria-label="Damage it stops" title="Damage it stops, for example -d2">
+      <label class="check" title="Shields stop 1 more damage, or break to ignore one attack">
+        <input type="checkbox" id="f-shield"> Shield</label>
     </div>
-    <p class="help">Dodge: roll a d20 and add Agility, need 12. If hit anyway, roll the die
-      above and take that much off the damage.</p>
-    <label class="check"><input type="checkbox" id="f-shield"> I have a shield</label>
   </section>
 
   <section class="block">
-    <h2>What your class gives you</h2>
-    <p class="help" id="class-note"></p>
+    <h2>Your class</h2>
     <div id="features" class="list"></div>
-    <button type="button" class="add" data-add="features">Add a class feature</button>
+    <button type="button" class="add" data-add="features">Add</button>
   </section>
 
   <section class="block">
-    <h2>Weapons</h2>
-    <p class="help">Roll a d20, add Strength up close or Presence at range. Need 12.
-      Then roll the damage die.</p>
+    <h2 title="Attack: roll a d20, add Strength up close or Presence at range, DR12. Then roll the damage die.">Weapons</h2>
     <div id="weapons" class="list"></div>
-    <button type="button" class="add" data-add="weapons">Add a weapon</button>
+    <button type="button" class="add" data-add="weapons">Add</button>
   </section>
 
   <section class="block">
     <h2>Equipment</h2>
     <div id="gear" class="list"></div>
-    <button type="button" class="add" data-add="gear">Add equipment</button>
+    <button type="button" class="add" data-add="gear">Add</button>
   </section>
 
   <section class="block">
-    <h2>Scrolls and powers</h2>
+    <h2 title="Reading a scroll: test Presence DR12. Fail and you lose d2 HP and are dizzy for an hour.">Scrolls</h2>
     <div id="scrolls" class="list"></div>
-    <button type="button" class="add" data-add="scrolls">Add a scroll</button>
-  </section>
-
-  <section class="block">
-    <h2>When you get better</h2>
-    <p class="help">Roll all of this in the dice tray, one die at a time.</p>
-    <ol class="steps">
-      <li><strong>More hit points.</strong> Roll 6d10. Equal to your maximum or higher, add
-        a d6 to the maximum.</li>
-      <li><strong>Every ability.</strong> Roll a d6 against each. Equal or higher, up by 1.
-        Lower, down by 1. Never above +6 or below -3. Anything from -3 to +1 always goes up,
-        unless the d6 shows a 1.</li>
-      <li><strong>In the debris.</strong> Roll a d6: 1 to 3 nothing, 4 is 3d10 silver,
-        5 an unclean scroll, 6 a sacred scroll.</li>
-    </ol>
+    <button type="button" class="add" data-add="scrolls">Add</button>
   </section>
 
   <section class="block">
@@ -146,8 +125,7 @@
     <textarea id="f-notes" rows="3"></textarea>
   </section>
 
-  <p class="footer">Saves itself in this browser as you type.
-    <span id="saved-at"></span></p>
+  <p class="footer"><span id="saved-at"></span></p>
 
 </main>
 
