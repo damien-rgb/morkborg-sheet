@@ -47,65 +47,127 @@
     return scoreToModifier(roll(6) + roll(6) + roll(6));
   }
 
-  /* ---------- making a scvm ---------- */
-
-  function newCharacter() {
-    var cls = pick(MB_DATA.classes);
-
-    var abilities = {};
-    ABILITIES.forEach(function (a) { abilities[a.key] = rollModifier(); });
-
-    var hpMax = Math.max(1, roll(cls.hpDie) + abilities.toughness);
-    var omenSides = cls.omenDie === 'd4' ? 4 : 2;
-    var weapon = pick(MB_DATA.weapons);
-
-    // Armour is a d4: 1 is rags, 4 is the heaviest tier.
-    var tier = MB_DATA.armor.tiers[Math.max(0, roll(4) - 1)] || MB_DATA.armor.tiers[0];
-
-    var gear = [
-      { name: 'Waterskin', detail: '' },
-      { name: 'Torches', detail: '4' },
-      { name: 'Dry rations', detail: '4' },
-      { name: 'Rope, 30ft', detail: '' }
-    ];
-    if (/crossbow/i.test(weapon.name)) {
-      gear.push({ name: 'Crossbow bolts', detail: '10' });
-    }
-
-    var scrolls = [];
-    var hasScroll = cls.name === 'Esoteric Hermit' ||
-                    cls.name === 'Heretical Priest' ||
-                    Math.random() < 0.25;
-    if (hasScroll) {
-      var s = pick(MB_DATA.scrolls);
-      scrolls.push({ name: s.name, detail: s.description });
-    }
-
-    return {
-      name: pick(MB_NAMES),
-      className: cls.name,
-      classDesc: cls.desc + ' ' + cls.traits,
-      abilities: abilities,
-      hp: hpMax,
-      hpMax: hpMax,
-      omens: roll(omenSides),
-      powers: Math.max(0, roll(4) + abilities.presence),
-      silver: roll(6) * 10,
-      armour: tier.name,
-      armourDr: tier.damageReduction === '0' ? '' : tier.damageReduction,
-      shield: tier.tier > 0 && Math.random() > 0.5,
-      weapons: [{ name: weapon.name, detail: weapon.damageDie }],
-      gear: gear,
-      scrolls: scrolls,
-      notes: ''
-    };
-  }
-
   var MB_NAMES = [
     'Borg', 'Krugg', 'Varg', 'Kagur', 'Morn', 'Gorg', 'Agnar', 'Bael',
     'Gudrun', 'Helvi', 'Astrid', 'Vesper', 'Dag', 'Gunnar', 'Yrsa', 'Snorri',
     'Old Gid', 'Carcass', 'Grub', 'Maggot', 'Crow-Bait', 'Hemlock'
   ];
+
+  /* ---------- making a scvm ---------- */
+
+  // Rolls 3d6, applies the class adjustment, and turns the total into the
+  // modifier the game actually uses.
+  function rollAbility(adjust) {
+    var score = roll(6) + roll(6) + roll(6) + (adjust || 0);
+    return scoreToModifier(score);
+  }
+
+  function rollSilver(spec) {
+    var total = 0;
+    for (var i = 0; i < spec.dice; i++) total += roll(spec.sides);
+    return total * (spec.times || 1);
+  }
+
+  // Takes `count` different entries from a table, so a class never hands you
+  // the same item twice.
+  function takeDistinct(table, count) {
+    var pool = table.slice();
+    var out = [];
+    while (out.length < count && pool.length) {
+      out.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    }
+    return out.map(function (e) { return { name: e.name, detail: e.detail }; });
+  }
+
+  function randomScroll(type) {
+    var pool = MB_DATA.scrolls.filter(function (s) { return !type || s.type === type; });
+    var s = pick(pool.length ? pool : MB_DATA.scrolls);
+    return { name: s.name, detail: s.description };
+  }
+
+  function newCharacter(cls) {
+    cls = cls || pick(MB_CLASSES);
+
+    var abilities = {};
+    ABILITIES.forEach(function (a) {
+      abilities[a.key] = rollAbility(cls.abilities[a.key]);
+    });
+
+    var hpMax = Math.max(1, roll(cls.hpDie) + abilities.toughness);
+
+    // Everyone starts with a waterskin and d4 days of food, then one roll on
+    // each of the three starting kit tables.
+    var gear = [
+      { name: 'Waterskin', detail: '' },
+      { name: 'Days of food', detail: String(roll(4)) }
+    ];
+    var scrolls = [];
+    var shield = false;
+
+    function addKit(entry) {
+      if (!entry) return;
+      if (entry.isScroll) {
+        // The Deserter cannot read, so a scroll is no use to them.
+        if (cls.illiterate) { gear.push({ name: 'A scroll you cannot read', detail: 'Eat it or use it as toilet paper.' }); return; }
+        scrolls.push(randomScroll(entry.isScroll));
+        return;
+      }
+      if (entry.isShield) { shield = true; }
+      gear.push({ name: entry.name, detail: entry.detail });
+    }
+
+    addKit(MB_KIT_D6[roll(6) - 1]);
+    addKit(MB_KIT_D12_A[roll(12) - 1]);
+    addKit(MB_KIT_D12_B[roll(12) - 1]);
+
+    if (cls.startsWithScroll && !cls.illiterate) {
+      scrolls.push(randomScroll(null));
+    }
+
+    // Starting with a scroll narrows both tables, because scrolls will not work
+    // in medium or heavy armour, nor with a two-hander.
+    var hasScroll = scrolls.length > 0;
+    var weaponDie = hasScroll ? Math.min(6, cls.weaponDie) : cls.weaponDie;
+    var armourDie = hasScroll ? Math.min(2, cls.armourDie) : cls.armourDie;
+
+    var weapon = MB_WEAPON_TABLE[roll(weaponDie) - 1];
+
+    var armour = MB_ARMOUR_TABLE[roll(armourDie) - 1];
+    if (cls.rerollHeavyArmour && armour.tier === 3) {
+      armour = MB_ARMOUR_TABLE[roll(3) - 1];
+    }
+
+    var features = (cls.always || []).slice();
+    if (cls.featurePicks) {
+      features = features.concat(takeDistinct(cls.features, cls.featurePicks));
+    }
+    if (cls.decoctionPicks) {
+      features = features.concat(takeDistinct(cls.decoctions, cls.decoctionPicks).map(function (d) {
+        return { name: "Today's decoction: " + d.name, detail: d.detail };
+      }));
+    }
+
+    return {
+      name: pick(MB_NAMES),
+      className: cls.name,
+      classDesc: cls.blurb,
+      classNote: cls.abilityNote,
+      abilities: abilities,
+      hp: hpMax,
+      hpMax: hpMax,
+      omens: roll(cls.omenDie),
+      powers: hasScroll ? Math.max(1, roll(4) + abilities.presence) : 0,
+      silver: rollSilver(cls.silver),
+      armour: armour.name,
+      armourDr: armour.dr,
+      shield: shield,
+      weapons: [{ name: weapon.name, detail: weapon.detail }],
+      features: features,
+      gear: gear,
+      scrolls: scrolls,
+      notes: ''
+    };
+  }
 
   /* ---------- saving ---------- */
 
@@ -204,6 +266,7 @@
   // One list drawer for weapons, gear and scrolls. Each row is a name, a short
   // detail, and a remove button. Nothing is hidden behind a click.
   var LISTS = {
+    features: { hostId: 'features', detail: 'What it does', placeholder: 'Class feature', empty: 'Nothing from your class.' },
     weapons: { hostId: 'weapons', detail: 'Damage', placeholder: 'Sword', empty: 'No weapons yet.' },
     gear:    { hostId: 'gear',    detail: 'Qty', detailLabel: 'How many', placeholder: 'Torches', empty: 'No equipment yet.' },
     scrolls: { hostId: 'scrolls', detail: 'What it does', placeholder: 'Scroll name', empty: 'No scrolls.' }
@@ -212,6 +275,8 @@
   function drawList(key) {
     var cfg = LISTS[key];
     var host = document.getElementById(cfg.hostId);
+    // A sheet saved before this list existed has no array for it.
+    if (!Array.isArray(character[key])) character[key] = [];
     var rows = character[key];
     host.innerHTML = '';
 
@@ -278,7 +343,10 @@
     document.getElementById('f-shield').checked = !!character.shield;
     val('f-notes', character.notes);
 
+    document.getElementById('class-note').textContent = character.classNote || '';
+
     drawAbilities();
+    drawList('features');
     drawList('weapons');
     drawList('gear');
     drawList('scrolls');

@@ -26,7 +26,11 @@ Most digital sheets try to play the game for you. This one does not.
   They are there to be read out loud.
 - **The player edits it.** Hit points, silver, omens, gear, all typed or nudged directly.
 - **A new scvm in one press.** Characters die constantly in this game, so rolling up a
-  replacement takes one button and a couple of seconds.
+  replacement takes one button and a couple of seconds. It rolls the real thing: the class's
+  own ability adjustments, silver, omen and hit dice, the right die on the weapon and armour
+  tables, the three starting kit tables, and whatever the class grants you. Wretched Royalty
+  gets its two companions or heirlooms, the Deserter cannot read a scroll it finds, and a
+  character holding a scroll is kept out of medium and heavy armour.
 - **Buttons say words**, not icons. Targets are large. Focus outlines are loud.
 
 Drag the extension panel to the side of the Owlbear window and use the dice tray as normal.
