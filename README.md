@@ -33,8 +33,9 @@ Most digital sheets try to play the game for you. This one does not.
   character holding a scroll is kept out of medium and heavy armour.
 - **Buttons say words**, not icons. Targets are large. Focus outlines are loud.
 
-Drag the extension panel to the side of the Owlbear window and use the dice tray as normal.
-For hit points on the map, the Stat Bubbles extension does that job better than a sheet can.
+The panel is deliberately narrow, 400 by 900, so it lives down one side of the Owlbear window
+and leaves the map alone. Drag it where you want it and use the dice tray as normal. For hit
+points on the map, the Stat Bubbles extension does that job better than a sheet can.
 
 ## Saving
 

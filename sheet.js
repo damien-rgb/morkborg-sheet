@@ -228,7 +228,10 @@
     host.innerHTML = '';
 
     ABILITIES.forEach(function (a) {
-      var box = el('div', 'ability');
+      // One line per ability: the name, the number, and the sentence to read
+      // out. A row costs a quarter of the height of a box and reads as an
+      // instruction rather than as a stat block.
+      var row = el('div', 'ability');
 
       var id = 'ab-' + a.key;
       var label = el('label', 'ability-name', a.label);
@@ -256,10 +259,10 @@
       });
 
       refresh();
-      box.appendChild(label);
-      box.appendChild(input);
-      box.appendChild(say);
-      host.appendChild(box);
+      row.appendChild(label);
+      row.appendChild(input);
+      row.appendChild(say);
+      host.appendChild(row);
     });
   }
 
@@ -339,7 +342,7 @@
       var setShape = function () {
         // Only a true short code rides beside the name: a damage die, a count.
         // Anything longer takes the full width, which also frees the name box.
-        var brief = (detail.value || '').length <= 6;
+        var brief = (detail.value || '').length <= 11;
         card.classList.toggle('brief', brief);
         if (!brief) grow();
         else detail.style.height = '';

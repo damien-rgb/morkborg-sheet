@@ -8,7 +8,7 @@
     "title": "Simple Sheet",
     "icon": "/morkborg-sheet/icon.svg",
     "popover": "/morkborg-sheet/index.html",
-    "width": 720,
-    "height": 720
+    "width": 400,
+    "height": 900
   }
 }

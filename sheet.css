@@ -102,14 +102,19 @@ main {
 /* The three running counters. They drop to two, then one, as the panel narrows. */
 .three {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
-  gap: 6px 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
   margin-top: 8px;
 }
 
 /* Smaller steps here, so the number keeps the width it needs to be read. */
-.three .step { width: 38px; height: 38px; font-size: 1.3rem; }
-.three .counter input { min-width: 52px; font-size: 1.15rem; }
+.three .step { width: 30px; height: 36px; font-size: 1.1rem; }
+.three .counter { gap: 4px; }
+.three .counter input { min-width: 34px; font-size: 1.05rem; padding: 4px 2px; }
+.three .help { display: none; }
+
+/* One line covering all three, instead of three stacked explanations. */
+.three-note { margin: 6px 0 0; font-size: 0.85rem; line-height: 1.3; color: var(--muted); }
 
 h2 {
   margin: 0 0 6px;
@@ -182,37 +187,39 @@ input:focus, textarea:focus, button:focus {
 
 /* ---------- abilities ---------- */
 
-.abilities {
-  display: grid;
-  /* auto-fit measures the container, not the window, which is what matters
-     once the page flows into columns. */
-  grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
-  gap: 6px;
-}
+/* One line each: name, number, and the sentence to read out. Stacked rows beat
+   a grid of boxes in a narrow side panel, and the instruction sits right
+   against the number it refers to. */
+.abilities { display: flex; flex-direction: column; gap: 5px; }
 
 .ability {
+  display: grid;
+  grid-template-columns: 1fr 64px auto;
+  align-items: center;
+  gap: 8px;
   border: 3px solid var(--line);
-  padding: 6px;
+  padding: 4px 6px;
 }
 
 .ability-name {
   font-weight: 900;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
 }
 
 .ability input {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 900;
   text-align: center;
   padding: 2px 4px;
+  min-height: 38px;
 }
 
 .ability-say {
-  margin-top: 4px;
   font-size: 0.82rem;
   font-weight: 700;
+  white-space: nowrap;
   color: var(--ink);
   background: var(--yellow);
   padding: 4px 6px;
@@ -266,7 +273,7 @@ input:focus, textarea:focus, button:focus {
 
 /* A short detail, a quantity or a damage die, sits beside the name instead of
    claiming a line of its own. Long rules text still gets the full width. */
-.item.brief { grid-template-columns: 1fr 92px auto; }
+.item.brief { grid-template-columns: minmax(80px, 1fr) 104px auto; }
 .item.brief .row-detail {
   grid-column: 2;
   grid-row: 1;
@@ -292,8 +299,8 @@ input:focus, textarea:focus, button:focus {
 
 .remove {
   flex: 0 0 auto;
-  min-width: var(--tap);
-  height: var(--tap);
+  min-width: 40px;
+  height: 40px;
   font: inherit;
   font-weight: 700;
   background: var(--paper);

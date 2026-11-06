@@ -37,8 +37,8 @@
 
   <section class="block">
     <h2>Abilities</h2>
-    <p class="help">To test an ability: roll a d20 in the dice tray and add the number.
-      You need 12 or more, unless the GM says otherwise.</p>
+    <p class="help">Roll a d20 in the tray and add the number. You need 12, unless the GM
+      says otherwise.</p>
     <div id="abilities" class="abilities"></div>
   </section>
 
@@ -61,7 +61,6 @@
           <input id="f-omens" type="number" inputmode="numeric">
           <button type="button" class="step" data-step="omens:1" aria-label="Gain an omen">+</button>
         </div>
-        <p class="help">Spend one to reroll any die.</p>
       </div>
       <div>
         <span class="lbl">Powers today</span>
@@ -70,7 +69,6 @@
           <input id="f-powers" type="number" inputmode="numeric">
           <button type="button" class="step" data-step="powers:1" aria-label="Regain a power">+</button>
         </div>
-        <p class="help">Each morning roll d4 and add Presence.</p>
       </div>
       <div>
         <span class="lbl">Silver</span>
@@ -79,9 +77,10 @@
           <input id="f-silver" type="number" inputmode="numeric">
           <button type="button" class="step" data-step="silver:1" aria-label="Gain one silver">+</button>
         </div>
-        <p class="help">Type a total to change it by more.</p>
       </div>
     </div>
+    <p class="three-note">Omens reroll any die. Powers: each morning roll d4 and add
+      Presence. Type a number straight in to change it by more than one.</p>
   </section>
 
   <section class="block">
@@ -96,8 +95,8 @@
         <input class="big-text" id="f-armour-dr" type="text" autocomplete="off" placeholder="none">
       </div>
     </div>
-    <p class="help">To dodge: roll a d20 and add Agility. You need 12 or more.
-      If you are hit anyway, roll the die above and take off that much damage.</p>
+    <p class="help">Dodge: roll a d20 and add Agility, need 12. If hit anyway, roll the die
+      above and take that much off the damage.</p>
     <label class="check"><input type="checkbox" id="f-shield"> I have a shield</label>
   </section>
 
@@ -110,8 +109,8 @@
 
   <section class="block">
     <h2>Weapons</h2>
-    <p class="help">To attack: roll a d20, add Strength up close or Presence at range.
-      You need 12 or more. Then roll the damage die.</p>
+    <p class="help">Roll a d20, add Strength up close or Presence at range. Need 12.
+      Then roll the damage die.</p>
     <div id="weapons" class="list"></div>
     <button type="button" class="add" data-add="weapons">Add a weapon</button>
   </section>
@@ -132,13 +131,13 @@
     <h2>When you get better</h2>
     <p class="help">Roll all of this in the dice tray, one die at a time.</p>
     <ol class="steps">
-      <li><strong>More hit points.</strong> Roll 6d10. If it is the same as your maximum
-        hit points or higher, add a d6 to the maximum.</li>
-      <li><strong>Every ability changes.</strong> Roll a d6 against each one. The same or
-        higher, it goes up by 1. Lower, it goes down by 1. Never above +6 or below -3.
-        An ability between -3 and +1 always goes up by 1, unless the d6 shows a 1.</li>
-      <li><strong>Left in the debris.</strong> Roll a d6. On 1 to 3 nothing, on 4 you find
-        3d10 silver, on 5 an unclean scroll, on 6 a sacred scroll.</li>
+      <li><strong>More hit points.</strong> Roll 6d10. Equal to your maximum or higher, add
+        a d6 to the maximum.</li>
+      <li><strong>Every ability.</strong> Roll a d6 against each. Equal or higher, up by 1.
+        Lower, down by 1. Never above +6 or below -3. Anything from -3 to +1 always goes up,
+        unless the d6 shows a 1.</li>
+      <li><strong>In the debris.</strong> Roll a d6: 1 to 3 nothing, 4 is 3d10 silver,
+        5 an unclean scroll, 6 a sacred scroll.</li>
     </ol>
   </section>
 
