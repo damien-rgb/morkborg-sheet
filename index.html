@@ -66,7 +66,8 @@
         <input id="f-powers" type="number" inputmode="numeric">
         <button type="button" class="step" data-step="powers:1" aria-label="Regain a power">+</button>
       </div>
-      <p class="help">Uses of scrolls left today.</p>
+      <p class="help">Each morning roll a d4 and add Presence. That is how many times
+      you can read a scroll today.</p>
     </section>
 
     <section class="block">
@@ -119,6 +120,20 @@
   </section>
 
   <section class="block">
+    <h2>When you get better</h2>
+    <p class="help">Roll all of this in the dice tray, one die at a time.</p>
+    <ol class="steps">
+      <li><strong>More hit points.</strong> Roll 6d10. If it is the same as your maximum
+        hit points or higher, add a d6 to the maximum.</li>
+      <li><strong>Every ability changes.</strong> Roll a d6 against each one. The same or
+        higher, it goes up by 1. Lower, it goes down by 1. Never above +6 or below -3.
+        An ability between -3 and +1 always goes up by 1, unless the d6 shows a 1.</li>
+      <li><strong>Left in the debris.</strong> Roll a d6. On 1 to 3 nothing, on 4 you find
+        3d10 silver, on 5 an unclean scroll, on 6 a sacred scroll.</li>
+    </ol>
+  </section>
+
+  <section class="block">
     <h2>Notes</h2>
     <textarea id="f-notes" rows="5"></textarea>
   </section>
@@ -130,11 +145,12 @@
 
 <dialog id="confirm-new">
   <form method="dialog">
-    <h2>Roll a new scvm?</h2>
-    <p>This replaces the character on screen. Save the current one to a file first if you want to keep it.</p>
+    <h2>Leave this one for the crows?</h2>
+    <p>The scvm on screen will be gone and the dirt will not give them back.
+      Save them to a file first if you are sentimental.</p>
     <menu>
-      <button value="cancel">Keep this one</button>
-      <button value="ok" class="danger">Roll a new one</button>
+      <button value="cancel">No. They draw breath yet</button>
+      <button value="ok" class="danger">Yes. Roll a new wretch</button>
     </menu>
   </form>
 </dialog>

@@ -156,7 +156,7 @@
       hp: hpMax,
       hpMax: hpMax,
       omens: roll(cls.omenDie),
-      powers: hasScroll ? Math.max(1, roll(4) + abilities.presence) : 0,
+      powers: Math.max(0, roll(4) + abilities.presence),
       silver: rollSilver(cls.silver),
       armour: armour.name,
       armourDr: armour.dr,
@@ -266,10 +266,10 @@
   // One list drawer for weapons, gear and scrolls. Each row is a name, a short
   // detail, and a remove button. Nothing is hidden behind a click.
   var LISTS = {
-    features: { hostId: 'features', detail: 'What it does', placeholder: 'Class feature', empty: 'Nothing from your class.', wordy: true },
+    features: { hostId: 'features', detail: 'What it does', placeholder: 'Class feature', empty: 'Nothing from your class.' },
     weapons: { hostId: 'weapons', detail: 'Damage', placeholder: 'Sword', empty: 'No weapons yet.' },
     gear:    { hostId: 'gear',    detail: 'Qty', detailLabel: 'How many', placeholder: 'Torches', empty: 'No equipment yet.' },
-    scrolls: { hostId: 'scrolls', detail: 'What it does', placeholder: 'Scroll name', empty: 'No scrolls.', wordy: true }
+    scrolls: { hostId: 'scrolls', detail: 'What it does', placeholder: 'Scroll name', empty: 'No scrolls.' }
   };
 
   function drawList(key) {
@@ -286,9 +286,9 @@
     }
 
     rows.forEach(function (row, i) {
-      var line = el('div', 'item');
+      var card = el('div', 'item');
 
-      var name = el('input');
+      var name = el('input', 'row-name');
       name.type = 'text';
       name.value = row.name || '';
       name.placeholder = cfg.placeholder;
@@ -298,27 +298,23 @@
         queueSave();
       });
 
-      // Class features and scrolls carry a sentence or two of rules text, so
-      // they get a box that grows to fit. Everything else is a short field.
-      var wordy = cfg.wordy;
-      var detail = el(wordy ? 'textarea' : 'input');
-      if (!wordy) detail.type = 'text';
-      detail.className = wordy ? 'wordy' : 'small';
+      // Rules text runs to a paragraph and a quantity runs to one character,
+      // so the box grows to whatever it holds rather than guessing a width.
+      var detail = el('textarea', 'row-detail');
       detail.value = row.detail || '';
       detail.placeholder = cfg.detail;
       detail.setAttribute('aria-label', cfg.detailLabel || cfg.detail);
-      if (wordy) {
-        detail.rows = 2;
-        var grow = function () {
-          detail.style.height = 'auto';
-          // The box is border-box, so the border has to be added back on or
-          // the last line stays hidden.
-          var border = detail.offsetHeight - detail.clientHeight;
-          detail.style.height = (detail.scrollHeight + border) + 'px';
-        };
-        detail.addEventListener('input', grow);
-        setTimeout(grow, 0);
-      }
+      detail.rows = 1;
+
+      var grow = function () {
+        detail.style.height = 'auto';
+        // Border-box, so the border has to be added back on or the last line
+        // stays hidden.
+        var border = detail.offsetHeight - detail.clientHeight;
+        detail.style.height = (detail.scrollHeight + border) + 'px';
+      };
+      detail.addEventListener('input', grow);
+
       detail.addEventListener('input', function () {
         row.detail = detail.value;
         queueSave();
@@ -332,10 +328,13 @@
         save();
       });
 
-      line.appendChild(name);
-      line.appendChild(detail);
-      line.appendChild(kill);
-      host.appendChild(line);
+      card.appendChild(name);
+      card.appendChild(detail);
+      card.appendChild(kill);
+      host.appendChild(card);
+
+      // Sized once the card is in the document and has a real width.
+      setTimeout(grow, 0);
     });
   }
 

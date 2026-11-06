@@ -215,30 +215,29 @@ input:focus, textarea:focus, button:focus {
 
 .list { display: flex; flex-direction: column; gap: 8px; }
 
+/* One shape for every row in every list: the name, then whatever it does, then
+   the way to remove it. Nothing is squeezed into a narrow column, so no text is
+   ever cut off halfway through a sentence. */
 .item {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
+  border: 3px solid var(--line);
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 8px;
 }
 
-.item input, .item textarea { flex: 1 1 auto; }
-.item input.small { flex: 0 0 92px; }
+/* Name and its remove button share the top line; whatever it does runs the
+   full width underneath. */
+.item .row-name { grid-column: 1; grid-row: 1; font-weight: 700; }
+.item .remove   { grid-column: 2; grid-row: 1; }
 
-/* Rules text wraps and the box grows, rather than hiding the end of a sentence
-   inside a one-line field. */
-.item textarea.wordy {
-  flex: 2 1 160px;
+.item .row-detail {
+  grid-column: 1 / -1;
+  grid-row: 2;
   min-height: var(--tap);
   resize: vertical;
   overflow: hidden;
   line-height: 1.35;
-}
-
-/* On a narrow panel, a feature and its rules text stack instead of squeezing. */
-@media (max-width: 520px) {
-  .item:has(textarea.wordy) { flex-wrap: wrap; }
-  .item:has(textarea.wordy) > input { flex: 1 1 100%; }
-  .item:has(textarea.wordy) > textarea { flex: 1 1 100%; }
 }
 
 .remove {
@@ -268,6 +267,11 @@ input:focus, textarea:focus, button:focus {
 .add:hover { background: var(--pink); color: #fff; }
 
 .empty { color: var(--muted); font-style: italic; }
+
+/* The getting better steps. Numbered, roomy, nothing to press. */
+.steps { margin: 10px 0 0; padding-left: 22px; }
+.steps li { margin-bottom: 10px; }
+.steps li:last-child { margin-bottom: 0; }
 
 /* ---------- dialog ---------- */
 
@@ -302,7 +306,8 @@ dialog button.danger { background: var(--black); color: var(--yellow); }
 /* ---------- print ---------- */
 
 @media print {
-  .bar, .add, .remove, .step, .help, .footer { display: none !important; }
+  .bar, .add, .remove, .step, .footer { display: none !important; }
+  .help { color: #000; }
   body { font-size: 12pt; }
   main { max-width: none; padding: 0; }
   .block { break-inside: avoid; border-width: 2px; }
